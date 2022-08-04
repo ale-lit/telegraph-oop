@@ -135,8 +135,9 @@ class FileStorage extends Storage
 
     public function delete(string $slug): void
     {
-        if (file_exists($slug . '.txt')) {
-            unlink($slug);
+        $file = STORAGE_DIR . '/' . $slug . '.txt';
+        if (file_exists($file)) {
+            unlink($file);
         }
     }
 
@@ -152,4 +153,7 @@ $te = new Text('Pyer', 'papapa');
 $test = new FileStorage();
 // $test->create($te);
 print_r($test->read('papapa_2022-08-04_3'));
+
+// Удаление
+$test->delete('papapa_2022-08-04_2');
 
