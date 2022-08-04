@@ -64,7 +64,7 @@ abstract class Storage
 {
     abstract public function create(Text $object): string;
     abstract public function read(string $slug): Text;
-    abstract public function update(string $slug, self $data): void;
+    abstract public function update(string $slug, Text $data): void;
     abstract public function delete(string $slug): void;
     abstract public function list(): array;
 }
@@ -127,10 +127,9 @@ class FileStorage extends Storage
         }
     }
 
-    // TODO: доделать
-    public function update(string $slug, $data): void
+    public function update(string $slug, Text $data): void
     {
-        file_put_contents($slug, serialize($data));
+        file_put_contents(STORAGE_DIR . '/' . $slug, serialize($data));
     }
 
     public function delete(string $slug): void
@@ -158,9 +157,11 @@ $test = new FileStorage();
 // $test->create($te);
 print_r($test->read('papapa_2022-08-04_3'));
 
+// Изменение
+$test->update('papapa_2022-08-04_3', $te);
+
 // Удаление
 // $test->delete('papapa_2022-08-04_2');
 
 // Список всех файлов
-print_r($test->list());
-
+// print_r($test->list());
