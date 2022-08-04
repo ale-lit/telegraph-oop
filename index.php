@@ -1,7 +1,6 @@
 <?php
 
 const STORAGE_DIR = 'storage';
-
 if(!file_exists('storage')) mkdir('storage');
 
 class Text
@@ -9,11 +8,11 @@ class Text
     public $title;
     public $text;
     public $author;
-    public $published;
     public $slug;
+    public $published;
 
     public function __construct(string $author, string $slug)
-    {
+    {   
         $this->author = $author;
         $this->slug = $slug;
         $this->published = date('Y-m-d H:i:s');
@@ -54,11 +53,10 @@ class Text
     }
 }
 
-$newPost = new Text('Павел', 'test_text_file.txt');
-$newPost->editText('Первый пост', 'Первый текст');
-$newPost->storeText();
-echo $newPost->loadText();
-
+// $newPost = new Text('Павел', 'test_text_file.txt');
+// $newPost->editText('Первый пост', 'Первый текст');
+// $newPost->storeText();
+// echo $newPost->loadText();
 
 abstract class Storage
 {
@@ -111,6 +109,7 @@ class FileStorage extends Storage
             'text' => $object->text,
             'author' => $object->author,
             'published' => $object->published,
+            'slug' => $object->slug,
         ];
 
         file_put_contents(STORAGE_DIR . '/' . $fileName . '.txt', serialize($data));
@@ -119,9 +118,11 @@ class FileStorage extends Storage
 
     public function read(string $slug): Text
     {
-        $fileName = $slug . '.txt';
-        if (file_exists(STORAGE_DIR . '/' . $fileName) && filesize(STORAGE_DIR . '/' . $fileName) > 0) {
-            return new Text('', $fileName);
+        $fileName = STORAGE_DIR . '/' . $slug . '.txt';        
+        if (file_exists($fileName) && filesize($fileName) > 0) {
+            $savedData = unserialize(file_get_contents($fileName));
+            $post = new Text($savedData['author'], $savedData['slug'], $this);
+            return $post;
         } else {
             return false;
         }
@@ -129,7 +130,7 @@ class FileStorage extends Storage
 
     public function update(string $slug, Text $data): void
     {
-        file_put_contents(STORAGE_DIR . '/' . $slug, serialize($data));
+        file_put_contents(STORAGE_DIR . '/' . $slug . '.txt', serialize($data));
     }
 
     public function delete(string $slug): void
@@ -151,17 +152,19 @@ class FileStorage extends Storage
     }
 }
 
-
-$te = new Text('Pyer', 'papapa');
-$test = new FileStorage();
+// Создание
+// $te = new Text('Гоша', 'test');
+// $test = new FileStorage();
 // $test->create($te);
-print_r($test->read('papapa_2022-08-04_3'));
+
+// Чтение
+// print_r($test->read('test_2022-08-04'));
 
 // Изменение
-$test->update('papapa_2022-08-04_3', $te);
+// $test->update('test_2022-08-04', $te);
 
 // Удаление
-// $test->delete('papapa_2022-08-04_2');
+// $test->delete('test_2022-08-04');
 
 // Список всех файлов
 // print_r($test->list());
