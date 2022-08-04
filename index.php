@@ -143,8 +143,12 @@ class FileStorage extends Storage
 
     public function list(): array
     {
-        $allFiles = scandir(STORAGE_DIR);
-        return $allFiles;
+        $allFiles = array_diff(scandir(STORAGE_DIR), array('..', '.'));
+        $result = [];
+        foreach ($allFiles as $file) {
+            $result[] = unserialize(file_get_contents(STORAGE_DIR . '/' . $file));
+        }
+        return $result;
     }
 }
 
@@ -155,5 +159,8 @@ $test = new FileStorage();
 print_r($test->read('papapa_2022-08-04_3'));
 
 // Удаление
-$test->delete('papapa_2022-08-04_2');
+// $test->delete('papapa_2022-08-04_2');
+
+// Список всех файлов
+print_r($test->list());
 
