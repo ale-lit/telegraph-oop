@@ -5,14 +5,14 @@ if(!file_exists('storage')) mkdir('storage');
 
 interface LoggerInterface
 {
-    function logMessage(string $error);
+    function logMessage(string $error): void;
     function lastMessages(int $num): array;
 }
 
 interface EventListenerInterface
 {
-    function attachEvent(string $className, callable $callback);
-    function detouchEvent(string $className);
+    function attachEvent(string $className, callable $callback): void;
+    function detouchEvent(string $className): void;
 }
 
 class Text
@@ -103,7 +103,7 @@ abstract class User implements EventListenerInterface
 
 class FileStorage extends Storage
 {
-    function logMessage(string $error)
+    function logMessage(string $error): void
     {
     }
 
@@ -113,11 +113,11 @@ class FileStorage extends Storage
         return $example;
     }
 
-    function attachEvent(string $className, callable $callback)
+    function attachEvent(string $className, callable $callback): void
     {
     }
 
-    function detouchEvent(string $className)
+    function detouchEvent(string $className): void
     {
     }
 
