@@ -3,6 +3,18 @@
 const STORAGE_DIR = 'storage';
 if(!file_exists('storage')) mkdir('storage');
 
+interface LoggerInterface
+{
+    function logMessage(string $error);
+    function lastMessages(int $num): array;
+}
+
+interface EventListenerInterface
+{
+    function attachEvent(string $className, callable $callback);
+    function detouchEvent(string $className);
+}
+
 class Text
 {
     public $title;
@@ -58,7 +70,7 @@ class Text
 // $newPost->storeText();
 // echo $newPost->loadText();
 
-abstract class Storage
+abstract class Storage implements LoggerInterface, EventListenerInterface
 {
     abstract public function create(Text $object): string;
     abstract public function read(string $slug): Text;
@@ -80,7 +92,7 @@ abstract class View
     abstract public function displayTextByUrl(string $url): string;
 }
 
-abstract class User
+abstract class User implements EventListenerInterface
 {
     public $id;
     public $name;
@@ -91,6 +103,24 @@ abstract class User
 
 class FileStorage extends Storage
 {
+    function logMessage(string $error)
+    {
+    }
+
+    function lastMessages(int $num): array
+    {
+        $example = [];
+        return $example;
+    }
+
+    function attachEvent(string $className, callable $callback)
+    {
+    }
+
+    function detouchEvent(string $className)
+    {
+    }
+
     public function create(Text $object): string
     {
         $fileName = $object->slug . '_' . date('Y-m-d');
