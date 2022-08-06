@@ -59,27 +59,22 @@ class Text
                 break;
 
             case 'text':
+                $this->text = $value;
                 $this->storeText();
                 break;
             
             default:
-                # code...
-                break;
+                return;
         }
     }
 
     public function __get($name)
     {
         if ($name === 'text') {
-            $this->loadText();
+            return $this->loadText();
         } else {
             return $this->$name;
         }
-
-
-        // if ($name === 'author') {
-        //     return $this->author;
-        // }
     }
 
     private function storeText(): void
