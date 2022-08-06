@@ -17,11 +17,11 @@ interface EventListenerInterface
 
 class Text
 {
-    public $title;
-    public $text;
-    public $author;
-    public $slug;
-    public $published;
+    private $text;
+    private $title;
+    private $author;
+    private $published;
+    private $slug;
 
     public function __construct(string $author, string $slug)
     {   
@@ -30,7 +30,59 @@ class Text
         $this->published = date('Y-m-d H:i:s');
     }
 
-    public function storeText(): void
+    public function __set($name, $value)
+    {
+        switch ($name) {
+            case 'author':
+                if (strlen($value) > 120) {
+                    echo 'Ошибка! Поле author не должно быть больше 120 символов' . PHP_EOL;
+                    return;
+                }
+                $this->author = $value;
+                break;
+
+            case 'slug':
+                $pattern = '/[^A-Za-z0-9—_\/]/';
+                if (preg_match($pattern, $value)) {
+                    echo 'Ошибка! Поле slug может содержать только буквы латинского алфавита, цифры, и символы (тире, нижнее подчеркивание, слэш)' . PHP_EOL;
+                    return;
+                }
+                $this->slug = $value;
+                break;
+
+            case 'published':
+                if (strtotime($value) < date('U')) {
+                    echo 'Ошибка! Поле published задано не корректно. Дата должна быть больше или равна текущей.' . PHP_EOL;
+                    return;
+                }
+                $this->published = $value;
+                break;
+
+            case 'text':
+                $this->storeText();
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function __get($name)
+    {
+        if ($name === 'text') {
+            $this->loadText();
+        } else {
+            return $this->$name;
+        }
+
+
+        // if ($name === 'author') {
+        //     return $this->author;
+        // }
+    }
+
+    private function storeText(): void
     {
         $data = [
             'title' => $this->title,
@@ -44,7 +96,7 @@ class Text
         }
     }
 
-    public function loadText(): string
+    private function loadText(): string
     {
         if (file_exists($this->slug) && filesize($this->slug) > 0) {
             $savedData = unserialize(file_get_contents($this->slug));
@@ -65,10 +117,12 @@ class Text
     }
 }
 
-// $newPost = new Text('Павел', 'test_text_file.txt');
+$newPost = new Text('Павел', 'test_text_file.txt');
 // $newPost->editText('Первый пост', 'Первый текст');
 // $newPost->storeText();
 // echo $newPost->loadText();
+// $newPost->published = '12.09.2022';
+// echo $newPost->published;
 
 abstract class Storage implements LoggerInterface, EventListenerInterface
 {
@@ -94,9 +148,9 @@ abstract class View
 
 abstract class User implements EventListenerInterface
 {
-    public $id;
-    public $name;
-    public $role;
+    protected $id;
+    protected $name;
+    protected $role;
 
     abstract public function getTextsToEdit();
 }
