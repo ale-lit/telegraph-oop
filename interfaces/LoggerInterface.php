@@ -2,6 +2,6 @@
 
 interface LoggerInterface
 {
-    function logMessage(string $error): void;
-    function lastMessages(int $num): array;
+    public function logMessage(string $error): void;
+    public function lastMessages(int $num): array;
 }

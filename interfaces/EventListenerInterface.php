@@ -2,6 +2,6 @@
 
 interface EventListenerInterface
 {
-    function attachEvent(string $className, callable $callback): void;
-    function detouchEvent(string $className): void;
+    public function attachEvent(string $className, callable $callback): void;
+    public function detouchEvent(string $className): void;
 }

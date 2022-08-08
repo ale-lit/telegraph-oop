@@ -2,21 +2,21 @@
 
 class FileStorage extends Storage
 {
-    function logMessage(string $error): void
+    public function logMessage(string $error): void
     {
     }
 
-    function lastMessages(int $num): array
+    public function lastMessages(int $num): array
     {
         $example = [];
         return $example;
     }
 
-    function attachEvent(string $className, callable $callback): void
+    public function attachEvent(string $className, callable $callback): void
     {
     }
 
-    function detouchEvent(string $className): void
+    public function detouchEvent(string $className): void
     {
     }
 
