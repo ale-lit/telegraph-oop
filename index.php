@@ -7,17 +7,17 @@ if (!file_exists('storage')) {
     mkdir('storage');
 }
 
-$newObject = new FileStorage();
+// $newObject = new FileStorage();
 
-// $newPost = new Text('Павел', 'test_text_file.txt');
+// $newPost = new TelegraphText('Павел', 'test_text_file.txt');
 // $newPost->editText('Первый пост', 'Первый текст');
 // $newPost->storeText();
 // echo $newPost->loadText();
-// $newPost->published = '12.09.2022';
+// $newPost->published = '12.03.2022';
 // echo $newPost->published;
 
 // Создание
-// $te = new Text('Гоша', 'test');
+// $te = new TelegraphText('Гоша', 'testt');
 // $test = new FileStorage();
 // $test->create($te);
 

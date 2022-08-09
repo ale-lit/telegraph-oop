@@ -20,7 +20,7 @@ class FileStorage extends Storage
     {
     }
 
-    public function create(Text $object): string
+    public function create(TelegraphText $object): string
     {
         $fileName = $object->slug . '_' . date('Y-m-d');
         if (file_exists(STORAGE_DIR . '/' . $fileName . '.txt')) {
@@ -45,19 +45,17 @@ class FileStorage extends Storage
         return $fileName;
     }
 
-    public function read(string $slug): Text
+    public function read(string $slug): TelegraphText
     {
         $fileName = STORAGE_DIR . '/' . $slug . '.txt';        
         if (file_exists($fileName) && filesize($fileName) > 0) {
             $savedData = unserialize(file_get_contents($fileName));
-            $post = new Text($savedData['author'], $savedData['slug'], $this);
+            $post = new TelegraphText($savedData['author'], $savedData['slug']);
             return $post;
-        } else {
-            return false;
         }
     }
 
-    public function update(string $slug, Text $data): void
+    public function update(string $slug, TelegraphText $data): void
     {
         file_put_contents(STORAGE_DIR . '/' . $slug . '.txt', serialize($data));
     }
