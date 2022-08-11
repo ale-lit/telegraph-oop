@@ -11,11 +11,16 @@ if (!file_exists('storage')) {
     mkdir('storage');
 }
 
+function errorHandler(Throwable $exception)
+{
+    echo "<div style='background: pink; color: red; font-weight: bold; padding: 10px;'>{$exception->getMessage()}</div>";
+}
+set_exception_handler('errorHandler');
+
+
 if (isset($_POST['author']) && isset($_POST['text'])) {
     $author = htmlentities($_POST['author']);
     $text = htmlentities($_POST['text']);
-
-    echo $text;
 
     $newObject = new TelegraphText($author, 'test');
     $newObject->editText('title', $text);

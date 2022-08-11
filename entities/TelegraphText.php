@@ -93,16 +93,10 @@ class TelegraphText
 
     public function editText(string $title, string $text): void
     {        
-        try {
-            if (strlen($text) < 1 || strlen($text) > 500) {
-                throw new Exception('Длина текста должна быть от 1 до 500 символов!');
-            }
-            $this->title = $title;
-            $this->text = $text;
-        } catch (Exception $e) {
-            $this->title = '';
-            $this->text = '';
-            echo "<div class='alert alert-danger fw-bold' role='alert'>{$e->getMessage()}</div>";
+        if (strlen($text) < 1 || strlen($text) > 500) {
+            throw new Exception('Длина текста должна быть от 1 до 500 символов!');
         }
+        $this->title = $title;
+        $this->text = $text;
     }
 }
