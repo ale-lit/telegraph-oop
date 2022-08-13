@@ -73,8 +73,27 @@ class FileStorage extends Storage
         $allFiles = array_diff(scandir(STORAGE_DIR), array('..', '.'));
         $result = [];
         foreach ($allFiles as $file) {
-            $result[] = unserialize(file_get_contents(STORAGE_DIR . '/' . $file));
+            $result[$file] = unserialize(file_get_contents(STORAGE_DIR . '/' . $file));
         }
         return $result;
+    }
+
+    public function backup()
+    {
+        $json = json_encode($this->list());
+        $dt = new DateTime();
+        file_put_contents('backup/backup_' . $dt->format('d-m-Y_H-i-s') . '.json', $json);
+    }
+
+    public function restoreBackup(string $backupName)
+    {
+        if (file_exists('backup/' . $backupName)) {
+            $json = file_get_contents('backup/' . $backupName);
+            $backupData = json_decode($json, true);
+
+            foreach ($backupData as $fileName => $data) {
+                file_put_contents('storage/' . $fileName, serialize($data));
+            }
+        }
     }
 }

@@ -1,0 +1,1 @@
+a:5:{s:5:"title";N;s:4:"text";s:17:"fgdfgdfgdfgdfgdfg";s:6:"author";s:10:"Павел";s:9:"published";s:19:"2022-08-13 13:33:05";s:4:"slug";s:25:"test_text_file_2022-08-13";}

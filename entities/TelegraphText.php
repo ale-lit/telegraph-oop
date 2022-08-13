@@ -64,16 +64,8 @@ class TelegraphText
 
     private function storeText(): void
     {
-        $data = [
-            'title' => $this->title,
-            'text' => $this->text,
-            'author' => $this->author,
-            'published' => $this->published,
-        ];
-
-        if (!file_exists($this->slug)) {
-            file_put_contents($this->slug, serialize($data));
-        }
+        $fs = new FileStorage();
+        $fs->create($this);
     }
 
     private function loadText(): string
